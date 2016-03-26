@@ -39,14 +39,13 @@ class IPciChangeHandler;
 class PciListenerImp2 : public PciListener
 {
   public:
-    PciListenerImp2();
-    /**
-     * Initialize the listener.
-     *  - pin - Pin to listen
-     *  - handler - Handler
-     *  - puppUp - Set true, to have the pin set in pullup mode.
-     */
-    void init(byte pin, IPciChangeHandler* handler, bool pullUp = false);
+	/**
+	     * Initialize the listener.
+	     *  - pin - Pin to listen
+	     *  - handler - Handler
+	     *  - puppUp - Set true, to have the pin set in pullup mode.
+	     */
+    PciListenerImp2(byte pin, IPciChangeHandler* handler, bool pullUp = false);
     virtual void pciHandleInterrupt(byte vector);
     byte lastVal;
   private:

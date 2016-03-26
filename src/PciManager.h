@@ -34,16 +34,15 @@
  * The listener will be called on pin change of the vector of pins that this pin belongs to. So you always have
  * to check if your pin was changed or not. 
  */
-class PciManagerClass
+class PciManager
 {
   public:
-    /**
-     * Register a pin for pin change interrupt.
-     *  pin - The pin the listener to be registered for pinChange.
-     *  listener - The lister that is called on pin change. Note, that as matters stand, you souldn't register
-     *    a listener multiply times (e.g. for more pins).
-     */
-    void registerListener(byte pin, PciListener* listener);
+
+	PciManager(const PciManager& that) = delete;
+	void operator=(const PciManager& that) = delete;
+	static PciManager& instance();
+
+
     /**
      * Register a pin for pin change interrupt. Same as above but the pin needs to be configured in the listener.
      *  listener - The lister that is called on pin change. Note, that as matters stand, you souldn't register
@@ -60,12 +59,22 @@ class PciManagerClass
      * For internal use only.
      */
     void callListeners(byte pciVectorId);
-  private:
-    void add(PciListener* listener);
-    void remove(PciListener* listener);
-    PciListener* _firstListener;
-};
 
-extern PciManagerClass PciManager;
+	volatile bool isEnabled() const {
+		return enabled;
+	}
+
+	void setEnabled(volatile bool enabled) {
+		this->enabled = enabled;
+	}
+
+  private:
+    PciManager();
+
+    PciListener* firstListener;
+    PciListener* lastListener;
+
+    volatile bool enabled;
+};
 
 #endif

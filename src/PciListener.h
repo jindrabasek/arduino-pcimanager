@@ -7,22 +7,22 @@
  * Contact: prampec+arduino@gmail.com
  * Copyright: 2012 Balazs Kelemen
  * Copying permission statement:
-    This file is part of PciManager.
+ This file is part of PciManager.
 
-    PciManager is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+ PciManager is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-*/
+ */
 
 #ifndef PCI_LISTENER_H
 #define PCI_LISTENER_H
@@ -33,22 +33,33 @@
  * PinChangeInterrupt listener abstract class. Please override this class with a custom pciHandleInterrupt() callback.
  */
 class PciListener {
-  public:
-    /**
-     * This method will be called by the PciManager on pin change. The function will be fired if any of the registered pins
-     * are fired within the same vector.
-     *  vector - Vector can be 0, 1 or 2 depending on the changed pin. (This parameter is not very useful.)
-     */
-    virtual void pciHandleInterrupt(byte vector) { };
+public:
+	virtual ~PciListener(){}
 
-    /** The pin being registered by this listener */
-    byte pciPin;
-    
-    /** The PCI vector this pin belongs to. */
-    byte pciVector;
+	PciListener(byte pciPin = 0);
 
-    /** For internal use. Do not modify. */
-    PciListener* pciNextListener;
+	/**
+	 * This method will be called by the PciManager on pin change. The function will be fired if any of the registered pins
+	 * are fired within the same vector.
+	 *  vector - Vector can be 0, 1 or 2 depending on the changed pin. (This parameter is not very useful.)
+	 */
+	virtual void pciHandleInterrupt(byte vector)=0;
+
+	void remove();
+
+	/** The pin being registered by this listener */
+	byte pciPin;
+
+	/** The PCI vector this pin belongs to. */
+	byte pciVector;
+
+	/** For internal use. Do not modify. */
+	PciListener* pciNextListener;
+
+	/**
+	 * This member is for internal use only. Do not change!
+	 */
+	PciListener** prevToThisListener;
 };
 
 #endif
