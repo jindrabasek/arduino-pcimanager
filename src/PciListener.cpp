@@ -5,7 +5,10 @@
  *      Author: jindra
  */
 
-#include "PciListener.h"
+#include <Arduino.h>
+#include <pins_arduino.h>
+#include <PciListener.h>
+#include <stddef.h>
 
 PciListener::PciListener(byte pciPin) :
         pciPin(pciPin),

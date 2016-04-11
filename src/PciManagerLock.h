@@ -8,7 +8,8 @@
 #ifndef LIBRARIES_PCIMANAGER_SRC_PCIMANAGERLOCK_H_
 #define LIBRARIES_PCIMANAGER_SRC_PCIMANAGERLOCK_H_
 
-#include "PciManager.h"
+#include <PciManager.h>
+#include <stdbool.h>
 
 class PciManagerLock {
 public:

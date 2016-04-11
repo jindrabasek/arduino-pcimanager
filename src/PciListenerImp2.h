@@ -29,6 +29,7 @@
 
 #include <Arduino.h>
 #include <PciListener.h>
+#include <stdbool.h>
 
 class IPciChangeHandler;
 

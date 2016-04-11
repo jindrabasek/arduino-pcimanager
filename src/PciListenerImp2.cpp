@@ -24,9 +24,10 @@
 
  */
 
-#include "Arduino.h"
-#include "PciListenerImp2.h"
+#include <Arduino.h>
 #include <IPciChangeHandler.h>
+#include <PciListenerImp2.h>
+#include <stdbool.h>
 
 PciListenerImp2::PciListenerImp2(byte pin, IPciChangeHandler* handler,
                                  bool pullUp) {

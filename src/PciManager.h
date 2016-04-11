@@ -27,7 +27,9 @@
 #ifndef PCIMANAGER_H
 #define PCIMANAGER_H
 
-#include "PciListener.h"
+#include <Arduino.h>
+#include <PciListener.h>
+#include <stdbool.h>
 
 /**
  * Register PCI listeners to pins with this Manager class.

@@ -28,6 +28,7 @@
 #define PCI_IPCICHANGEHANDLER_H
 
 #include <Arduino.h>
+#include <PciListenerImp2.h>
 
 /**
  * PinChangeInterrupt listener abstract class. Please override this class with a custom pciHandleInterrupt() callback

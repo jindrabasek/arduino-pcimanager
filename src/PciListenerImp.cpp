@@ -24,8 +24,9 @@
 
  */
 
-#include "Arduino.h"
-#include "PciListenerImp.h"
+#include <Arduino.h>
+#include <PciListenerImp.h>
+#include <stdbool.h>
 
 PciListenerImp::PciListenerImp(byte pin, void (*callback)(byte changeKind),
                                bool pullUp) {

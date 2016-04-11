@@ -29,6 +29,7 @@
 
 #include <Arduino.h>
 #include <PciListener.h>
+#include <stdbool.h>
 
 #define CHANGEKIND_HIGH_TO_LOW LOW
 #define CHANGEKIND_LOW_TO_HIGH HIGH
