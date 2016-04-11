@@ -8,17 +8,17 @@
 #include "PciListener.h"
 
 PciListener::PciListener(byte pciPin) :
-		pciPin(pciPin),
-		pciVector(digitalPinToPCICRbit(pciPin)),
-		pciNextListener(NULL),
-		prevToThisListener(NULL) {
+        pciPin(pciPin),
+        pciVector(digitalPinToPCICRbit(pciPin)),
+        pciNextListener(NULL),
+        prevToThisListener(NULL) {
 }
 
 void PciListener::remove() {
-	if (prevToThisListener != NULL) {
-		*prevToThisListener = pciNextListener;
-		prevToThisListener = NULL;
-		pciNextListener = NULL;
-	}
+    if (prevToThisListener != NULL) {
+        *prevToThisListener = pciNextListener;
+        prevToThisListener = NULL;
+        pciNextListener = NULL;
+    }
 }
 

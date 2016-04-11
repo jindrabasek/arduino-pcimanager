@@ -29,22 +29,22 @@
 #include <IPciChangeHandler.h>
 
 PciListenerImp2::PciListenerImp2(byte pin, IPciChangeHandler* handler,
-		bool pullUp) {
-	this->pciPin = pin;
-	this->_pciChangeHandler = handler;
+                                 bool pullUp) {
+    this->pciPin = pin;
+    this->_pciChangeHandler = handler;
 
-	if (pullUp) {
-		pinMode(pin, INPUT_PULLUP);
-	} else {
-		pinMode(pin, INPUT);
-	}
-	this->lastVal = digitalRead(this->pciPin);
+    if (pullUp) {
+        pinMode(pin, INPUT_PULLUP);
+    } else {
+        pinMode(pin, INPUT);
+    }
+    this->lastVal = digitalRead(this->pciPin);
 }
 
 void PciListenerImp2::pciHandleInterrupt(byte vect) {
-	byte val = digitalRead(this->pciPin);
-	if (val != this->lastVal) {
-		this->lastVal = val;
-		this->_pciChangeHandler->pciHandleChange(val, this);
-	}
+    byte val = digitalRead(this->pciPin);
+    if (val != this->lastVal) {
+        this->lastVal = val;
+        this->_pciChangeHandler->pciHandleChange(val, this);
+    }
 }

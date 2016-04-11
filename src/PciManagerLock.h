@@ -12,13 +12,12 @@
 
 class PciManagerLock {
 public:
-	PciManagerLock(){
-		PciManager::instance().setEnabled(false);
-	}
-	~PciManagerLock(){
-		PciManager::instance().setEnabled(true);
-	}
+    PciManagerLock() {
+        PciManager::instance().setEnabled(false);
+    }
+    ~PciManagerLock() {
+        PciManager::instance().setEnabled(true);
+    }
 };
-
 
 #endif /* LIBRARIES_PCIMANAGER_SRC_PCIMANAGERLOCK_H_ */

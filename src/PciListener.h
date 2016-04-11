@@ -34,32 +34,33 @@
  */
 class PciListener {
 public:
-	virtual ~PciListener(){}
+    virtual ~PciListener() {
+    }
 
-	PciListener(byte pciPin = 0);
+    PciListener(byte pciPin = 0);
 
-	/**
-	 * This method will be called by the PciManager on pin change. The function will be fired if any of the registered pins
-	 * are fired within the same vector.
-	 *  vector - Vector can be 0, 1 or 2 depending on the changed pin. (This parameter is not very useful.)
-	 */
-	virtual void pciHandleInterrupt(byte vector)=0;
+    /**
+     * This method will be called by the PciManager on pin change. The function will be fired if any of the registered pins
+     * are fired within the same vector.
+     *  vector - Vector can be 0, 1 or 2 depending on the changed pin. (This parameter is not very useful.)
+     */
+    virtual void pciHandleInterrupt(byte vector)=0;
 
-	void remove();
+    void remove();
 
-	/** The pin being registered by this listener */
-	byte pciPin;
+    /** The pin being registered by this listener */
+    byte pciPin;
 
-	/** The PCI vector this pin belongs to. */
-	byte pciVector;
+    /** The PCI vector this pin belongs to. */
+    byte pciVector;
 
-	/** For internal use. Do not modify. */
-	PciListener* pciNextListener;
+    /** For internal use. Do not modify. */
+    PciListener* pciNextListener;
 
-	/**
-	 * This member is for internal use only. Do not change!
-	 */
-	PciListener** prevToThisListener;
+    /**
+     * This member is for internal use only. Do not change!
+     */
+    PciListener** prevToThisListener;
 };
 
 #endif

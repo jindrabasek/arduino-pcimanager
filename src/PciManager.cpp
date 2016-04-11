@@ -27,90 +27,88 @@
 #include "Arduino.h"
 #include "PciManager.h"
 
-
 inline PciManager::PciManager() :
-	firstListener(NULL),
-	lastListener(NULL),
-	enabled(false){ // disable manager by default
+        firstListener(NULL),
+        lastListener(NULL),
+        enabled(false) { // disable manager by default
 }
 
 PciManager& PciManager::instance() {
-	static PciManager instance;
-	return instance;
+    static PciManager instance;
+    return instance;
 }
 
 void PciManager::registerListener(PciListener* listener) {
 
-	volatile uint8_t* pcicr = digitalPinToPCICR(listener->pciPin);
-	*pcicr |= (1 << listener->pciVector);
+    volatile uint8_t* pcicr = digitalPinToPCICR(listener->pciPin);
+    *pcicr |= (1 << listener->pciVector);
 
-	volatile uint8_t* pcmsk = digitalPinToPCMSK(listener->pciPin);
-	*pcmsk |= (1 << digitalPinToPCMSKbit(listener->pciPin));
+    volatile uint8_t* pcmsk = digitalPinToPCMSK(listener->pciPin);
+    *pcmsk |= (1 << digitalPinToPCMSKbit(listener->pciPin));
 
+    // -- A listener should be registered only once.
+    listener->remove();
 
-	// -- A listener should be registered only once.
-	listener->remove();
+    if (this->firstListener == NULL) {
 
-	if (this->firstListener == NULL) {
-
-		// -- This is the first listener being registered.
-		this->firstListener = listener;
-		this->lastListener = listener;
-	} else {
-		this->lastListener->pciNextListener = listener;
-		this->lastListener = listener;
-	}
-	listener->pciNextListener = NULL;
+        // -- This is the first listener being registered.
+        this->firstListener = listener;
+        this->lastListener = listener;
+    } else {
+        this->lastListener->pciNextListener = listener;
+        this->lastListener = listener;
+    }
+    listener->pciNextListener = NULL;
 }
 
 void PciManager::removeListener(PciListener* listenerToRemove) {
-	listenerToRemove->remove();
-	boolean hasMoreListenersOnSamePin = false;
-	boolean hasMoreListenersOnSameVector = false;
+    listenerToRemove->remove();
+    boolean hasMoreListenersOnSamePin = false;
+    boolean hasMoreListenersOnSameVector = false;
 
-	PciListener* listener = firstListener;
-	while (listener != NULL) {
-		if (listener->pciPin == listenerToRemove->pciPin) {
-			hasMoreListenersOnSamePin = true;
-			hasMoreListenersOnSameVector = true;
-			break;
-		}
-		if (listener->pciVector == listenerToRemove->pciVector) {
-			hasMoreListenersOnSameVector = true;
-		}
-		listener = listener->pciNextListener;
-	}
+    PciListener* listener = firstListener;
+    while (listener != NULL) {
+        if (listener->pciPin == listenerToRemove->pciPin) {
+            hasMoreListenersOnSamePin = true;
+            hasMoreListenersOnSameVector = true;
+            break;
+        }
+        if (listener->pciVector == listenerToRemove->pciVector) {
+            hasMoreListenersOnSameVector = true;
+        }
+        listener = listener->pciNextListener;
+    }
 
-	if (!hasMoreListenersOnSamePin) {
-		// -- Remove mask if no other uses this pin.
-		volatile uint8_t* pcmsk = digitalPinToPCMSK(listenerToRemove->pciPin);
-		*pcmsk &= ~(1 << digitalPinToPCMSKbit(listenerToRemove->pciPin));
+    if (!hasMoreListenersOnSamePin) {
+        // -- Remove mask if no other uses this pin.
+        volatile uint8_t* pcmsk = digitalPinToPCMSK(listenerToRemove->pciPin);
+        *pcmsk &= ~(1 << digitalPinToPCMSKbit(listenerToRemove->pciPin));
 
-		if (!hasMoreListenersOnSameVector) {
-			// -- Remove vector registration if no listeners for this vector.
-			volatile uint8_t* pcicr = digitalPinToPCICR(
-					listenerToRemove->pciPin);
-			*pcicr &= ~(1 << listenerToRemove->pciVector);
-		}
-	}
+        if (!hasMoreListenersOnSameVector) {
+            // -- Remove vector registration if no listeners for this vector.
+            volatile uint8_t* pcicr = digitalPinToPCICR(
+                    listenerToRemove->pciPin);
+            *pcicr &= ~(1 << listenerToRemove->pciVector);
+        }
+    }
 }
 
 /**
  * Walk through the chain and call all listener.
  */
 void PciManager::callListeners(byte pciVectorId) {
-	if (!enabled) {
-		return;
-	}
+    if (!enabled) {
+        return;
+    }
 
-	// -- (If first is NULL, than nothing is registered.)
-	PciListener* listener = firstListener;
-	while (listener != NULL) {
-		if (listener->pciVector == pciVectorId) {
-			listener->pciHandleInterrupt(pciVectorId);
-		}
-		listener = listener->pciNextListener;
-	}
+    // -- (If first is NULL, than nothing is registered.)
+    PciListener* listener = firstListener;
+    while (listener != NULL) {
+        if (listener->pciVector == pciVectorId) {
+            listener->pciHandleInterrupt(pciVectorId);
+        }
+        listener = listener->pciNextListener;
+    }
 }
 
 /**
