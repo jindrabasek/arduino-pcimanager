@@ -5,12 +5,12 @@
  *      Author: jindra
  */
 
-#include <Arduino.h>
 #include <pins_arduino.h>
 #include <PciListener.h>
 #include <stddef.h>
+#include <stdint.h>
 
-PciListener::PciListener(byte pciPin) :
+PciListener::PciListener(uint8_t pciPin) :
         pciPin(pciPin),
         pciVector(digitalPinToPCICRbit(pciPin)),
         pciNextListener(NULL),

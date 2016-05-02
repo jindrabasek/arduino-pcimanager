@@ -24,8 +24,13 @@
 
  */
 
-#include "Arduino.h"
-#include "PciManager.h"
+#include <Arduino.h>
+#include <pins_arduino.h>
+#include <PciListener.h>
+#include <PciManager.h>
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
 
 inline PciManager::PciManager() :
         firstListener(NULL),
@@ -96,7 +101,7 @@ void PciManager::removeListener(PciListener* listenerToRemove) {
 /**
  * Walk through the chain and call all listener.
  */
-void PciManager::callListeners(byte pciVectorId) {
+void PciManager::callListeners(uint8_t pciVectorId) {
     if (!enabled) {
         return;
     }

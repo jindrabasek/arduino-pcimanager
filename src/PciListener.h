@@ -27,7 +27,7 @@
 #ifndef PCI_LISTENER_H
 #define PCI_LISTENER_H
 
-#include <Arduino.h>
+#include <stdint.h>
 
 /**
  * PinChangeInterrupt listener abstract class. Please override this class with a custom pciHandleInterrupt() callback.
@@ -37,22 +37,22 @@ public:
     virtual ~PciListener() {
     }
 
-    PciListener(byte pciPin = 0);
+    PciListener(uint8_t pciPin = 0);
 
     /**
      * This method will be called by the PciManager on pin change. The function will be fired if any of the registered pins
      * are fired within the same vector.
      *  vector - Vector can be 0, 1 or 2 depending on the changed pin. (This parameter is not very useful.)
      */
-    virtual void pciHandleInterrupt(byte vector)=0;
+    virtual void pciHandleInterrupt(uint8_t vector)=0;
 
     void remove();
 
     /** The pin being registered by this listener */
-    byte pciPin;
+    uint8_t pciPin;
 
     /** The PCI vector this pin belongs to. */
-    byte pciVector;
+    uint8_t pciVector;
 
     /** For internal use. Do not modify. */
     PciListener* pciNextListener;

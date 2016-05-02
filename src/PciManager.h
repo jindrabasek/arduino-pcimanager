@@ -27,9 +27,9 @@
 #ifndef PCIMANAGER_H
 #define PCIMANAGER_H
 
-#include <Arduino.h>
 #include <PciListener.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 /**
  * Register PCI listeners to pins with this Manager class.
@@ -58,7 +58,7 @@ public:
     /**
      * For internal use only.
      */
-    void callListeners(byte pciVectorId);
+    void callListeners(uint8_t pciVectorId);
 
     volatile bool isEnabled() const {
         return enabled;

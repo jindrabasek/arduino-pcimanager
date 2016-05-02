@@ -27,9 +27,9 @@
 #ifndef PCI_LISTENERIMP_H
 #define PCI_LISTENERIMP_H
 
-#include <Arduino.h>
 #include <PciListener.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 #define CHANGEKIND_HIGH_TO_LOW LOW
 #define CHANGEKIND_LOW_TO_HIGH HIGH
@@ -42,11 +42,11 @@ public:
     /**
      * For the constructor add a function callback, that will be called either with CHANGEKIND_HIGH_TO_LOW or CHANGEKIND_LOW_TO_HIGH.
      */
-    PciListenerImp(byte pin, void (*callback)(byte changeKind), bool pullUp = false);
-    virtual void pciHandleInterrupt(byte vector);
+    PciListenerImp(uint8_t pin, void (*callback)(uint8_t changeKind), bool pullUp = false);
+    virtual void pciHandleInterrupt(uint8_t vector);
 private:
-    void (*_callback)(byte changeKind);
-    byte _lastVal;
+    void (*_callback)(uint8_t changeKind);
+    uint8_t _lastVal;
 };
 
 #endif

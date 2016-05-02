@@ -27,9 +27,9 @@
 #ifndef PCI_LISTENERIMP2_H
 #define PCI_LISTENERIMP2_H
 
-#include <Arduino.h>
 #include <PciListener.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 class IPciChangeHandler;
 
@@ -45,9 +45,9 @@ public:
      *  - handler - Handler
      *  - puppUp - Set true, to have the pin set in pullup mode.
      */
-    PciListenerImp2(byte pin, IPciChangeHandler* handler, bool pullUp = false);
-    virtual void pciHandleInterrupt(byte vector);
-    byte lastVal;
+    PciListenerImp2(uint8_t pin, IPciChangeHandler* handler, bool pullUp = false);
+    virtual void pciHandleInterrupt(uint8_t vector);
+    uint8_t lastVal;
 private:
     IPciChangeHandler* _pciChangeHandler;
 };

@@ -28,8 +28,9 @@
 #include <IPciChangeHandler.h>
 #include <PciListenerImp2.h>
 #include <stdbool.h>
+#include <stdint.h>
 
-PciListenerImp2::PciListenerImp2(byte pin, IPciChangeHandler* handler,
+PciListenerImp2::PciListenerImp2(uint8_t pin, IPciChangeHandler* handler,
                                  bool pullUp) {
     this->pciPin = pin;
     this->_pciChangeHandler = handler;
@@ -42,8 +43,8 @@ PciListenerImp2::PciListenerImp2(byte pin, IPciChangeHandler* handler,
     this->lastVal = digitalRead(this->pciPin);
 }
 
-void PciListenerImp2::pciHandleInterrupt(byte vect) {
-    byte val = digitalRead(this->pciPin);
+void PciListenerImp2::pciHandleInterrupt(uint8_t vect) {
+    uint8_t val = digitalRead(this->pciPin);
     if (val != this->lastVal) {
         this->lastVal = val;
         this->_pciChangeHandler->pciHandleChange(val, this);

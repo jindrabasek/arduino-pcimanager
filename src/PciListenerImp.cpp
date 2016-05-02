@@ -27,8 +27,9 @@
 #include <Arduino.h>
 #include <PciListenerImp.h>
 #include <stdbool.h>
+#include <stdint.h>
 
-PciListenerImp::PciListenerImp(byte pin, void (*callback)(byte changeKind),
+PciListenerImp::PciListenerImp(uint8_t pin, void (*callback)(uint8_t changeKind),
                                bool pullUp) {
     this->pciPin = pin;
     this->_callback = callback;
@@ -41,8 +42,8 @@ PciListenerImp::PciListenerImp(byte pin, void (*callback)(byte changeKind),
     this->_lastVal = digitalRead(this->pciPin);
 }
 
-void PciListenerImp::pciHandleInterrupt(byte vect) {
-    byte val = digitalRead(this->pciPin);
+void PciListenerImp::pciHandleInterrupt(uint8_t vect) {
+    uint8_t val = digitalRead(this->pciPin);
     if (val != this->_lastVal) {
         this->_lastVal = val;
         this->_callback(val);

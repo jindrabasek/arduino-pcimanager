@@ -27,8 +27,8 @@
 #ifndef PCI_IPCICHANGEHANDLER_H
 #define PCI_IPCICHANGEHANDLER_H
 
-#include <Arduino.h>
 #include <PciListenerImp2.h>
+#include <stdint.h>
 
 /**
  * PinChangeInterrupt listener abstract class. Please override this class with a custom pciHandleInterrupt() callback
@@ -43,7 +43,7 @@ public:
      * This method will be called by the PciManager on pin change. The function will be fired only when to corresponding pin
      * was changed. See PciListenerImpl2 for details.
      */
-    virtual void pciHandleChange(byte changedTo, PciListenerImp2* listener);
+    virtual void pciHandleChange(uint8_t changedTo, PciListenerImp2* listener);
 };
 
 #endif
