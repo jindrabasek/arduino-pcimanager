@@ -14,10 +14,10 @@
 class PciManagerLock {
 public:
     PciManagerLock() {
-        PciManager::instance().setEnabled(false);
+        PciManager.setEnabled(false);
     }
     ~PciManagerLock() {
-        PciManager::instance().setEnabled(true);
+        PciManager.setEnabled(true);
     }
 };
 

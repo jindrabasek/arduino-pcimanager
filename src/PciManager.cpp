@@ -32,18 +32,13 @@
 #include <stddef.h>
 #include <stdint.h>
 
-inline PciManager::PciManager() :
+inline PciManagerT::PciManagerT() :
         firstListener(NULL),
         lastListener(NULL),
         enabled(false) { // disable manager by default
 }
 
-PciManager& PciManager::instance() {
-    static PciManager instance;
-    return instance;
-}
-
-void PciManager::registerListener(PciListener* listener) {
+void PciManagerT::registerListener(PciListener* listener) {
 
     volatile uint8_t* pcicr = digitalPinToPCICR(listener->pciPin);
     *pcicr |= (1 << listener->pciVector);
@@ -66,7 +61,7 @@ void PciManager::registerListener(PciListener* listener) {
     listener->pciNextListener = NULL;
 }
 
-void PciManager::removeListener(PciListener* listenerToRemove) {
+void PciManagerT::removeListener(PciListener* listenerToRemove) {
     listenerToRemove->remove();
     boolean hasMoreListenersOnSamePin = false;
     boolean hasMoreListenersOnSameVector = false;
@@ -101,7 +96,7 @@ void PciManager::removeListener(PciListener* listenerToRemove) {
 /**
  * Walk through the chain and call all listener.
  */
-void PciManager::callListeners(uint8_t pciVectorId) {
+void PciManagerT::callListeners(uint8_t pciVectorId) {
     if (!enabled) {
         return;
     }
@@ -115,6 +110,8 @@ void PciManager::callListeners(uint8_t pciVectorId) {
         listener = listener->pciNextListener;
     }
 }
+
+PciManagerT PciManager;
 
 /**
  * Global interrupt handling implementations.
