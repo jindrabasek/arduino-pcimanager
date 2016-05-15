@@ -29,14 +29,17 @@
 
 #include <stdint.h>
 
+// Do not define virtual destructor on purpose - class
+// and its children is not expected to need destructors,
+// it saves a lot of SRAM otherwise occupied by VTABLE
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnon-virtual-dtor"
+
 /**
  * PinChangeInterrupt listener abstract class. Please override this class with a custom pciHandleInterrupt() callback.
  */
 class PciListener {
 public:
-    virtual ~PciListener() {
-    }
-
     PciListener(uint8_t pciPin = 0);
 
     /**
@@ -62,6 +65,8 @@ public:
      */
     PciListener** prevToThisListener;
 };
+
+#pragma GCC diagnostic pop
 
 #endif
 

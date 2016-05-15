@@ -30,21 +30,26 @@
 #include <PciListenerImp2.h>
 #include <stdint.h>
 
+// Do not define virtual destructor on purpose - class
+// and its children is not expected to need destructors,
+// it saves a lot of SRAM otherwise occupied by VTABLE
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnon-virtual-dtor"
+
 /**
  * PinChangeInterrupt listener abstract class. Please override this class with a custom pciHandleInterrupt() callback
  * to be used in PciListenerImpl2.
  */
 class IPciChangeHandler {
 public:
-    virtual ~IPciChangeHandler() {
-    }
-
     /**
      * This method will be called by the PciManager on pin change. The function will be fired only when to corresponding pin
      * was changed. See PciListenerImpl2 for details.
      */
     virtual void pciHandleChange(uint8_t changedTo, PciListenerImp2* listener);
 };
+
+#pragma GCC diagnostic pop
 
 #endif
 

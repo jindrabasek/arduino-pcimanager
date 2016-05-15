@@ -34,6 +34,12 @@
 #define CHANGEKIND_HIGH_TO_LOW LOW
 #define CHANGEKIND_LOW_TO_HIGH HIGH
 
+// Do not define virtual destructor on purpose - class
+// and its children is not expected to need destructors,
+// it saves a lot of SRAM otherwise occupied by VTABLE
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnon-virtual-dtor"
+
 /**
  * A basic PinChangeInterrupt listener implementation.
  */
@@ -48,6 +54,8 @@ private:
     void (*_callback)(uint8_t changeKind);
     uint8_t _lastVal;
 };
+
+#pragma GCC diagnostic pop
 
 #endif
 
